@@ -20,7 +20,8 @@ def extractData(key):
     """
     collective_data = {"Key Word" : key, "Articles Found" : None, "Articles Successfully Parsed" : None, "Top Collocates" : None}
     keywords = []
-    skipcount = 0
+    dl_skipcount = 0
+    parse_skipcount = 0
     # top number of words goes here
     n = 15
 
@@ -45,12 +46,14 @@ def extractData(key):
             a.download()
         except:
             print('Article ' + str(links.index(link)+1) + " not downloaded, skipping.")
-            skipcount += 1
+            # print(link)
+            dl_skipcount += 1
         try:
             a.parse()
         except:
             print('Article ' + str(links.index(link)+1) + " unable to be parsed, skipping.")
-            skipcount += 1
+            # print(link)
+            parse_skipcount += 1
         data = a.text
 
         # strip punctuation and white space and things
@@ -69,8 +72,10 @@ def extractData(key):
                 keywords.append(token.text)
 
     # compile results
-    collective_data["Articles Successfully Parsed"] = len(links) - skipcount
+    collective_data["Articles Successfully Parsed"] = len(links) - dl_skipcount - parse_skipcount
     top_keywords = Counter(keywords).most_common(n)
+    print("Download Error: " + str(dl_skipcount))
+    print("Parse Error: " + str(parse_skipcount))
 
     # creating a wordcloud (scrapped for now)
     # compiled_keywords = " ".join(keywords)
