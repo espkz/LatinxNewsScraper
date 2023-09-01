@@ -1,0 +1,19 @@
+Issue/Improvements Addressing
+
+1. The program takes 100 articles consistently.
+
+- This is a thing with Google News; each search only provides 100 articles.
+- Possible workarounds: search not on Google News, but to explore newspaper sites and their searches to possibly pull more than one article
+    - That being said, the articles themselves will be from one newspaper company (something that Google News doesn't do; it pulls articles from various sites), so maybe the program will have to pull from multiple newspaper sites
+
+2. Issues parsing about 10-20% of the articles
+
+- There are certain sites that block and prevent Article package from accessing the content, usually resolved by human hand by accessing cookies or doing a captcha. The site may also be blacklisted and automated programs cannot access it as well.
+    - This is shown through the news articles that cannot be scraped. When creating the Article object to scrape the html and content of the site, the sites that cannot be parsed have a blank string instead of the full html
+    - Parsing this results in a 403 Client Error: forbidden site/site that cannot be accessed
+- Possible workarounds:
+    - The workaround for 1 might work; using newspaper sites that are proven to be able to be scraped with Python
+    - It can also be done with a more brute-force solution; making an individual request to the site to scrape the html and parsing it with the BeautifulSoup package
+        - The only problem that exists, especially for Google News, is that the html formats for each news site is different, with different labels and different classes. That means we have to go through each site to try and identify what division classes are used to scrape just the content and not any other miscellaneous things
+            - But to be fair the Article package probably does that anyway so there can be an attempt in trying to replicate what it does
+    - Tried finding a new package to scrape text based off of URLs; so far the only stable package that does this function is the newspaper3k package that's being used
